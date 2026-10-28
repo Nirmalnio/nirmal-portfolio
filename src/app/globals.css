@@ -1,0 +1,207 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0b0c0e;
+  --color-surface: #111317;
+  --color-raised: #171a1f;
+  --color-line: #23272e;
+  --color-line-strong: #343942;
+  --color-ink: #eceef1;
+  --color-muted: #9aa1ad;
+  --color-faint: #8b919d;
+  --color-accent: #c8f35a;
+  --color-accent-ink: #10130a;
+
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background: var(--color-bg);
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  body {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .wrap {
+    width: min(76rem, 100% - 2.5rem);
+    margin-inline: auto;
+  }
+  .section {
+    padding-block: clamp(4.5rem, 9vw, 7.5rem);
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .display {
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+}
+
+/* Anything animated in must stay readable without JavaScript. */
+@media (scripting: none) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+}
+
+.hero-grid {
+  background-image: radial-gradient(var(--color-line-strong) 1px, transparent 1.2px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(320px circle at var(--mx, 72%) var(--my, 32%), #000, transparent 70%);
+  mask-image: radial-gradient(320px circle at var(--mx, 72%) var(--my, 32%), #000, transparent 70%);
+}
+.hero-spot {
+  background: radial-gradient(520px circle at var(--mx, 72%) var(--my, 32%), color-mix(in srgb, var(--color-accent) 9%, transparent), transparent 65%);
+}
+
+@keyframes float-y {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* Hero workspace scene */
+@keyframes ws-steam {
+  0% { opacity: 0; transform: translateY(4px); }
+  40% { opacity: 0.7; }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+@keyframes ws-breathe { 50% { transform: scaleY(1.015); } }
+@keyframes ws-twinkle { 50% { opacity: 0.15; } }
+@keyframes ws-rain { from { transform: translate(4px, -40px); } to { transform: translate(-4px, 40px); } }
+@keyframes ws-flash { 0%, 90%, 100% { opacity: 0; } 92% { opacity: 0.55; } 94% { opacity: 0.1; } 95% { opacity: 0.4; } }
+@keyframes ws-blink { 50% { opacity: 0; } }
+@keyframes ws-scroll { to { transform: translateY(-72px); } }
+@keyframes ws-cloud { from { transform: translateX(-120px); } to { transform: translateX(420px); } }
+@keyframes ws-birds {
+  from { transform: translate(-40px, 10px); }
+  to { transform: translate(400px, -40px); }
+}
+@keyframes ws-flap { to { transform: scaleY(0.35); } }
+@keyframes ws-shoot {
+  0%, 90% { opacity: 0; transform: translate(0, 0); }
+  91% { opacity: 1; }
+  97%, 100% { opacity: 0; transform: translate(-110px, 55px); }
+}
+@keyframes ws-drip {
+  0% { opacity: 0; transform: translateY(0); }
+  15% { opacity: 0.8; }
+  100% { opacity: 0; transform: translateY(80px); }
+}
+@keyframes ws-sway { to { transform: skewX(1.4deg); } }
+@keyframes ws-look {
+  0%, 55%, 100% { transform: rotate(0deg); }
+  62%, 78% { transform: rotate(-4deg) translateX(-1px); }
+}
+@keyframes ws-elbow { to { transform: translateY(-2.5px); } }
+@keyframes ws-flicker { 0%, 100% { opacity: 0.45; } 30% { opacity: 0.7; } 55% { opacity: 0.4; } 80% { opacity: 0.6; } }
+@keyframes ws-lights { 0%, 100% { opacity: 0.85; } 50% { opacity: 0.55; } }
+@keyframes ws-pulse { 50% { transform: scale(1.08); } }
+/* 48s cycle: each train crosses in ~18s, the two directions take turns, ~6s of empty track between them. */
+@keyframes ws-metro {
+  0% { transform: translateX(-125px); }
+  37.5%, 100% { transform: translateX(370px); }
+}
+@keyframes ws-metro-back {
+  0% { transform: translateX(370px); }
+  37.5%, 100% { transform: translateX(-125px); }
+}
+@keyframes ws-plane { from { transform: translate(-20px, 0); } to { transform: translate(390px, -14px); } }
+@keyframes ws-beacon { 0%, 70%, 100% { opacity: 0.15; } 75%, 85% { opacity: 1; } }
+@keyframes ws-dust {
+  0%, 100% { transform: translate(0, 0); opacity: 0.2; }
+  50% { transform: translate(6px, -14px); opacity: 0.8; }
+}
+@keyframes ws-ray { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+@keyframes ws-toast {
+  0%, 62%, 100% { opacity: 0; transform: translateY(4px); }
+  66%, 84% { opacity: 1; transform: translateY(0); }
+}
+@keyframes ws-notify { 0%, 80%, 100% { opacity: 0; } 83%, 92% { opacity: 0.85; } }
+
+@media (prefers-reduced-motion: no-preference) {
+  .a-steam { animation: ws-steam 2.4s ease-in-out infinite; }
+  .a-breathe { animation: ws-breathe 4.5s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+  .a-twinkle { animation: ws-twinkle 2.5s ease-in-out infinite; }
+  .a-rain { animation: ws-rain 0.6s linear infinite; }
+  .a-flash { animation: ws-flash 7s linear infinite; }
+  .a-blink { animation: ws-blink 1s steps(1) infinite; }
+  .a-scroll { animation: ws-scroll 9s linear infinite; }
+  .a-cloud { animation: ws-cloud 90s linear infinite; }
+  .a-birds { animation: ws-birds 26s linear infinite; }
+  .a-flap { animation: ws-flap 0.45s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
+  .a-shoot { animation: ws-shoot 11s ease-in infinite; }
+  .a-drip { animation: ws-drip 4s ease-in infinite; }
+  .a-sway { animation: ws-sway 7s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: 50% 0%; }
+  .a-look { animation: ws-look 9s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+  .a-elbow { animation: ws-elbow 0.26s ease-in-out infinite alternate; }
+  .a-flicker { animation: ws-flicker 2.6s ease-in-out infinite; }
+  .a-lights { animation: ws-lights 7s ease-in-out infinite; }
+  .a-pulse { animation: ws-pulse 6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  .a-metro { animation: ws-metro 48s linear infinite; }
+  .a-metro-back { animation: ws-metro-back 48s linear -24s infinite; }
+  .a-plane { animation: ws-plane 48s linear infinite; }
+  .a-beacon { animation: ws-beacon 1.4s linear infinite; }
+  .a-dust { animation: ws-dust 9s ease-in-out infinite; }
+  .a-ray { animation: ws-ray 7s ease-in-out infinite; }
+  .a-toast { animation: ws-toast 12s ease-out infinite; }
+  .a-notify { animation: ws-notify 14s ease-in-out infinite; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .a-flash { opacity: 0; }
+  /* Parked trains, one at each end of the line, instead of overlapping at the start. */
+  .a-metro { transform: translateX(30px); }
+  .a-metro-back { transform: translateX(220px); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .float-y {
+    animation: float-y 6s ease-in-out infinite;
+  }
+  .spin-slow {
+    animation: spin-slow 60s linear infinite;
+  }
+}

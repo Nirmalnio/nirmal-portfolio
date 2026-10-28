@@ -1,0 +1,86 @@
+import { Reveal, RevealGroup } from "@/components/ui/Reveal";
+import { Button } from "@/components/ui/Button";
+import { Magnetic } from "@/components/ui/Magnetic";
+import { SplitHeading } from "@/components/ui/SplitHeading";
+import { site } from "@/content/site";
+import { jobs } from "@/content/experience";
+import { getWeather } from "@/lib/weather";
+import { HeroStage } from "./HeroStage";
+import { HeroVisual } from "./HeroVisual";
+
+const headline = [
+  { text: "Frontends" },
+  { text: "that" },
+  { text: "keep" },
+  { text: "up" },
+  { text: "as" },
+  { text: "your" },
+  { text: "product" },
+  { text: "grows.", accent: true },
+] as const;
+
+export async function Hero() {
+  const weather = await getWeather();
+  return (
+    <HeroStage>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-40 -top-40 -z-10 size-[36rem] rounded-full bg-accent/10 blur-3xl"
+      />
+      <div className="wrap grid items-center gap-16 lg:grid-cols-[1.2fr_0.8fr]">
+        <RevealGroup mount gap={0.09}>
+          <Reveal className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm text-muted">
+            <span aria-hidden className="relative flex size-2">
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60 motion-reduce:hidden" />
+              <span className="relative inline-flex size-2 rounded-full bg-accent" />
+            </span>
+            {site.availability}
+          </Reveal>
+
+          <Reveal as="p" className="mt-6 text-2xl font-semibold tracking-tight sm:text-3xl">
+            Hi, I&rsquo;m <span className="text-accent">{site.name}</span>
+          </Reveal>
+          <Reveal as="p" className="eyebrow mt-1.5">
+            {site.role}
+          </Reveal>
+
+          <SplitHeading words={headline} className="display mt-4 text-[clamp(2.75rem,7vw,5rem)]" />
+
+          <Reveal as="p" className="mt-6 max-w-[58ch] text-lg text-muted sm:text-xl">
+            I build React and Next.js applications, SaaS dashboards and enterprise tools for teams that need
+            interfaces to load fast, scale cleanly and stay easy to work on. 7+ years, based in {site.location}.
+          </Reveal>
+
+          <Reveal className="mt-8 flex flex-wrap gap-3">
+            <Magnetic>
+              <Button href="#work" arrow>
+                View my work
+              </Button>
+            </Magnetic>
+            <Magnetic>
+              <Button href="#contact" variant="ghost">
+                Let&rsquo;s talk
+              </Button>
+            </Magnetic>
+            {site.resumeUrl && (
+              <Button href={site.resumeUrl} variant="ghost" download>
+                Resume
+              </Button>
+            )}
+          </Reveal>
+
+          <Reveal className="mt-10 max-w-xl border-t border-line pt-6">
+            <p className="eyebrow">Teams I&rsquo;ve built for</p>
+            <ul className="mt-3 flex flex-wrap gap-x-7 gap-y-2 text-lg font-semibold tracking-tight text-ink/80">
+              {jobs.map((j) => (
+                <li key={j.company}>{j.company}</li>
+              ))}
+            </ul>
+          </Reveal>
+        </RevealGroup>
+
+        <HeroVisual weather={weather} />
+      </div>
+    </HeroStage>
+  );
+}
