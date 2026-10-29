@@ -13,6 +13,8 @@ const localFormat = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: 
 
 export const SERVER_IST = "--:--:--";
 export const SERVER_LOCAL = "--:--|0";
+/** Before the browser knows the date, the calendar shows dashes. */
+export const SERVER_DATE = "---|--|---";
 
 export function subscribeClock(cb: () => void) {
   const id = setInterval(cb, 1000);
@@ -32,6 +34,19 @@ export function to12h(time: string) {
   if (!Number.isFinite(hour)) return time;
   return `${hour % 12 || 12}:${rest.join(":")} ${hour < 12 ? "AM" : "PM"}`;
 }
+
+const dateFormat = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Asia/Kolkata",
+  weekday: "short",
+  day: "numeric",
+  month: "short",
+});
+
+/** "Wed|29|Oct": today's weekday, day and month in Bengaluru. */
+export const dateNow = () => {
+  const parts = Object.fromEntries(dateFormat.formatToParts(new Date()).map((p) => [p.type, p.value]));
+  return `${parts.weekday}|${parts.day}|${parts.month}`;
+};
 
 /** 13 → "1 PM", 0 → "midnight". */
 export function hourLabel(h: number) {

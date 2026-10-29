@@ -23,7 +23,7 @@ export function Contact() {
           />
           <RevealOnScroll>
             <p className="eyebrow">
-              <span className="text-accent">06</span> &nbsp;/&nbsp; Contact
+              <span className="text-accent">07</span> &nbsp;/&nbsp; Contact
             </p>
           </RevealOnScroll>
           <RevealOnScroll as="h2" delay={0.06} className="display mt-5 max-w-[16ch] text-[clamp(2.25rem,6vw,4.5rem)]">

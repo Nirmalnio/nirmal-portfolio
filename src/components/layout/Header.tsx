@@ -11,11 +11,21 @@ const ids = [...nav.map((n) => n.id), "contact"];
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
+  // Mobile only: tucked away while scrolling down, back as soon as the reader scrolls up.
+  const [tucked, setTucked] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>("");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 12);
+      // Ignore tiny movements so the header doesn't flicker on small jitters.
+      if (Math.abs(y - last) < 6) return;
+      setTucked(y > last && y > 80);
+      last = y;
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -42,9 +52,9 @@ export function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter,translate] duration-300 max-md:focus-within:translate-y-0 ${
         scrolled || open ? "border-line bg-bg/85 backdrop-blur-md" : "border-transparent bg-transparent"
-      }`}
+      } ${tucked && !open ? "max-md:-translate-y-full" : ""}`}
     >
       <div className="wrap flex h-16 items-center justify-between">
         <a

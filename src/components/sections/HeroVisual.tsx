@@ -23,7 +23,9 @@ import { site } from "@/content/site";
 import type { Weather } from "@/lib/weather";
 import {
   SERVER_IST,
+  SERVER_DATE,
   SERVER_LOCAL,
+  dateNow,
   hourLabel,
   istNow,
   localNow,
@@ -34,6 +36,8 @@ import {
 import { WorkspaceScene, type Phase, type Sky } from "./WorkspaceScene";
 
 const DAY = 1440;
+
+
 const { wake, sleep } = site.schedule;
 
 function describe(code: number, isDay: boolean): { label: string; Icon: LucideIcon; sky: Sky } {
@@ -72,6 +76,7 @@ export function HeroVisual({ weather }: { weather: Weather | null }) {
   const reduce = useReducedMotion();
   const ist = useSyncExternalStore(subscribeClock, istNow, () => SERVER_IST);
   const local = useSyncExternalStore(subscribeClock, localNow, () => SERVER_LOCAL);
+  const date = useSyncExternalStore(subscribeClock, dateNow, () => SERVER_DATE);
   const [preview, setPreview] = useState<Preview>("live");
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
@@ -105,7 +110,7 @@ export function HeroVisual({ weather }: { weather: Weather | null }) {
     preview === "live" ? to12h(ist) : to12h(`${Math.floor(minutes / 60)}:00`);
 
   return (
-    <div ref={ref} className="relative mx-auto w-full max-w-[28rem] px-2 pb-6 sm:px-4">
+    <div ref={ref} className="relative mx-auto w-full max-w-[32rem] px-2 pb-6 sm:px-4">
       <m.div
         aria-hidden
         style={reduce ? undefined : { y: ringY }}
@@ -146,6 +151,7 @@ export function HeroVisual({ weather }: { weather: Weather | null }) {
             sky={w?.sky ?? "clear"}
             arc={Math.min(1, Math.max(0, arc))}
             time={displayTime}
+            date={date}
             label={preview === "live" ? "Live in Bengaluru" : "Preview · Bengaluru"}
             px={px}
             py={py}
@@ -202,6 +208,7 @@ export function HeroVisual({ weather }: { weather: Weather | null }) {
               </span>
             </span>
           </div>
+
         </div>
       </m.div>
     </div>

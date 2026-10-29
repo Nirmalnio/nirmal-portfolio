@@ -53,7 +53,7 @@
 
 @layer components {
   .wrap {
-    width: min(76rem, 100% - 2.5rem);
+    width: min(90rem, 100% - 2.5rem);
     margin-inline: auto;
   }
   .section {

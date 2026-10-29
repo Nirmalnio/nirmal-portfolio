@@ -16,6 +16,8 @@ type Props = {
   arc: number;
   /** Display time, e.g. "8:02:40 PM". */
   time: string;
+  /** "Wed|29|Oct" (weekday, day, month) for the desk calendar. */
+  date: string;
   /** e.g. "Live in Bengaluru" */
   label: string;
   /** Pointer position, -0.5 → 0.5, for depth parallax. */
@@ -332,7 +334,8 @@ function BigWindow({ phase, isDay, sky, arc }: Pick<Props, "phase" | "isDay" | "
   );
 }
 
-function Desk({ awake, phase, isDay, arc }: { awake: boolean; phase: Phase; isDay: boolean; arc: number }) {
+function Desk({ awake, phase, isDay, arc, date }: { awake: boolean; phase: Phase; isDay: boolean; arc: number; date: string }) {
+  const [weekday, day, month] = date.split("|");
   const lampOn = awake && phase !== "day";
   // Light comes from the window behind the desk, so shadows fall towards the viewer, nudged away from the sun.
   const shift = isDay ? (0.5 - arc) * 14 : 0;
@@ -447,14 +450,31 @@ function Desk({ awake, phase, isDay, arc }: { awake: boolean; phase: Phase; isDa
       <path d="M40 322C40 302 48 290 58 286C58 302 50 316 40 322Z" fill="#4c9a5f" />
       <path d="M37 322C34 306 36 292 42 282C44 298 42 312 37 322Z" fill="#3c8350" />
 
+      {/* desk calendar (tent style) showing today's date in Bengaluru */}
+      <g fill="#000" opacity={isDay ? 0.5 : 0.4} filter="url(#ws-shadow)">
+        <ellipse cx="73" cy="352" rx="19" ry="2.6" />
+      </g>
+      <path d="M52 352L56 304H90L94 352Z" fill="#e8e4da" />
+      <path d="M56 304H90L91.5 322H54.5Z" fill="var(--color-accent)" />
+      <path d="M62 304V300M84 304V300" stroke="#9aa1ad" strokeWidth="2" strokeLinecap="round" />
+      <text x="73" y="316" textAnchor="middle" fontSize="8" fontWeight="700" letterSpacing=".6" fill="var(--color-accent-ink)" fontFamily="var(--font-mono)">
+        {month.toUpperCase()}
+      </text>
+      <text x="73" y="338" textAnchor="middle" fontSize="19" fontWeight="800" fill="#1b1f26" fontFamily="var(--font-sans)">
+        {day}
+      </text>
+      <text x="73" y="348" textAnchor="middle" fontSize="6" fontWeight="600" letterSpacing=".5" fill="#6b7280" fontFamily="var(--font-mono)">
+        {weekday.toUpperCase()}
+      </text>
+
       {/* mug */}
-      <rect x="76" y="332" width="16" height="20" rx="3" fill="var(--color-accent)" />
-      <path d="M92 337a5 5 0 0 1 0 10" fill="none" stroke="var(--color-accent)" strokeWidth="2.5" />
+      <rect x="146" y="332" width="16" height="20" rx="3" fill="var(--color-accent)" />
+      <path d="M162 337a5 5 0 0 1 0 10" fill="none" stroke="var(--color-accent)" strokeWidth="2.5" />
       {awake &&
         [0, 1].map((i) => (
           <path
             key={i}
-            d={`M${80 + i * 6} 327c-3 -4 3 -6 0 -10`}
+            d={`M${150 + i * 6} 327c-3 -4 3 -6 0 -10`}
             fill="none"
             stroke="var(--color-muted)"
             strokeWidth="1.5"
@@ -617,7 +637,7 @@ const SHADE: Record<Phase, string> = {
 };
 
 /** My home desk by a big window onto Bengaluru, mirroring the real time of day and weather. */
-export function WorkspaceScene({ awake, phase, isDay, sky, arc, time, label, px, py }: Props) {
+export function WorkspaceScene({ awake, phase, isDay, sky, arc, time, date, label, px, py }: Props) {
   const back = useDepth(px, py, -10);
   const front = useDepth(px, py, 14);
   const daylight = !isDay ? 0 : sky === "clear" ? 1 : sky === "cloudy" ? 0.65 : 0.35;
@@ -636,7 +656,7 @@ export function WorkspaceScene({ awake, phase, isDay, sky, arc, time, label, px,
 
 
       <m.div style={front} className="absolute -inset-2">
-        <Desk awake={awake} phase={phase} isDay={isDay} arc={arc} />
+        <Desk awake={awake} phase={phase} isDay={isDay} arc={arc} date={date} />
       </m.div>
 
       {daylight > 0 && <Daylight phase={phase} arc={arc} strength={daylight} />}

@@ -47,6 +47,7 @@ export const nav = [
   { id: "work", label: "Work" },
   { id: "experience", label: "Experience" },
   { id: "approach", label: "Approach" },
+  { id: "social", label: "Social" },
 ] as const;
 
 export const heroStack = ["React", "Next.js", "TypeScript", "Node.js", "Redux Toolkit", "Zustand"] as const;

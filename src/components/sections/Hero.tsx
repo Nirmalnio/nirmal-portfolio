@@ -1,22 +1,19 @@
 import { Reveal, RevealGroup } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { Magnetic } from "@/components/ui/Magnetic";
-import { SplitHeading } from "@/components/ui/SplitHeading";
+import { RotatingHeadline } from "@/components/ui/RotatingHeadline";
 import { site } from "@/content/site";
 import { jobs } from "@/content/experience";
 import { getWeather } from "@/lib/weather";
 import { HeroStage } from "./HeroStage";
 import { HeroVisual } from "./HeroVisual";
 
-const headline = [
-  { text: "Frontends" },
-  { text: "that" },
-  { text: "keep" },
-  { text: "up" },
-  { text: "as" },
-  { text: "your" },
-  { text: "product" },
-  { text: "grows.", accent: true },
+/** Rotates in the hero. The `accent` ending is shown in lime. The first line is what screen readers announce. */
+const headlines = [
+  { lead: "Transforming complex ideas into powerful", accent: "digital products." },
+  { lead: "I turn ambitious product ideas into", accent: "scalable web experiences." },
+  { lead: "Engineering modern web experiences for products", accent: "built to grow." },
+  { lead: "I build fast applications that", accent: "scale with your business." },
 ] as const;
 
 export async function Hero() {
@@ -27,7 +24,7 @@ export async function Hero() {
         aria-hidden
         className="pointer-events-none absolute -right-40 -top-40 -z-10 size-[36rem] rounded-full bg-accent/10 blur-3xl"
       />
-      <div className="wrap grid items-center gap-16 lg:grid-cols-[1.2fr_0.8fr]">
+      <div className="wrap grid items-start gap-16 lg:grid-cols-[1.18fr_0.82fr]">
         <RevealGroup mount gap={0.09}>
           <Reveal className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm text-muted">
             <span aria-hidden className="relative flex size-2">
@@ -44,7 +41,9 @@ export async function Hero() {
             {site.role}
           </Reveal>
 
-          <SplitHeading words={headline} className="display mt-4 text-[clamp(2.75rem,7vw,5rem)]" />
+          <Reveal variant="rise">
+            <RotatingHeadline lines={headlines} className="display mt-4 text-[clamp(2.25rem,5vw,4.4rem)]" />
+          </Reveal>
 
           <Reveal as="p" className="mt-6 max-w-[58ch] text-lg text-muted sm:text-xl">
             I build React and Next.js applications, SaaS dashboards and enterprise tools for teams that need
