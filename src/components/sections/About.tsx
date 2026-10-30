@@ -7,7 +7,7 @@ import { site } from "@/content/site";
 const facts = [
   { value: "8+", label: "Years building for the web" },
   { value: "4", label: "Companies, from fintech to enterprise" },
-  { value: "2", label: "Countries of teams worked with: India and Canada" },
+  { value: "3", label: "Countries of teams worked with: India, Canada, and Singapore" },
 ] as const;
 
 export function About() {
